@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* RTL Support for Arabic */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+/* Custom styles for accessibility - large touch targets */
+.btn {
+  @apply min-h-[48px] min-w-[48px] px-6 py-3 text-lg font-semibold rounded-lg;
+}
+
+.btn-primary {
+  @apply bg-blue-900 text-white hover:bg-blue-800 active:bg-blue-950;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300 active:bg-gray-400;
+}
+
+/* Large text for elderly users */
+.text-accessible {
+  @apply text-lg;
+}
+
+.text-heading {
+  @apply text-2xl font-bold;
+}
+
+/* High contrast for accessibility */
+.input-field {
+  @apply block w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:ring-2 focus:ring-blue-900;
+}
+
+/* Blood glucose level indicators */
+.glucose-low {
+  @apply bg-red-600 text-white;
+}
+
+.glucose-normal {
+  @apply bg-green-600 text-white;
+}
+
+.glucose-elevated {
+  @apply bg-orange-500 text-white;
+}
+
+.glucose-high {
+  @apply bg-red-600 text-white;
+}

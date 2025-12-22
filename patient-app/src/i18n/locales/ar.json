@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "جوبيتيس - نظام متابعة السكري",
+    "subtitle": "نظام صحة الأردن للسكري"
+  },
+  "login": {
+    "title": "تسجيل الدخول",
+    "patientId": "رقم المريض",
+    "patientIdPlaceholder": "مثال: JO-2025-0001",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "error": {
+      "invalidCredentials": "رقم المريض أو كلمة المرور غير صحيحة",
+      "requiredFields": "يرجى ملء جميع الحقول"
+    }
+  },
+  "dashboard": {
+    "welcome": "مرحباً، {name}",
+    "bloodSugar": "مستوى السكر في الدم",
+    "addReading": "إضافة قراءة",
+    "chat": "المحادثة مع الطبيب",
+    "nutrition": "التغذية",
+    "latestReadings": "آخر القراءات",
+    "noReadings": "لا توجد قراءات بعد"
+  },
+  "readings": {
+    "title": "قراءات السكر",
+    "addNew": "إضافة قراءة جديدة",
+    "glucoseLevel": "مستوى السكر (mg/dL)",
+    "glucosePlaceholder": "مثال: 120",
+    "context": "السياق",
+    "beforeMeal": "قبل الوجبة",
+    "afterMeal": "بعد الوجبة",
+    "fasting": "صائم",
+    "bedtime": "قبل النوم",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "أضف أي ملاحظات (اختياري)",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "success": "تم حفظ القراءة بنجاح",
+    "levels": {
+      "low": "منخفض",
+      "normal": "طبيعي",
+      "elevated": "مرتفع قليلاً",
+      "high": "مرتفع جداً"
+    }
+  },
+  "chat": {
+    "title": "المحادثة مع الطبيب",
+    "typePlaceholder": "اكتب رسالتك هنا...",
+    "send": "إرسال",
+    "noMessages": "لا توجد رسائل بعد",
+    "you": "أنت",
+    "doctor": "الطبيب"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "retry": "إعادة المحاولة",
+    "close": "إغلاق",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "logout": "تسجيل الخروج"
+  }
+}
