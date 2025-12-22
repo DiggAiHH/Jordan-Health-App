@@ -91,11 +91,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AddReadingModal from './AddReadingModal.vue'
 
 const { t, locale } = useI18n()
+
+const emit = defineEmits(['navigate-to-chat'])
 
 const patientName = ref('أحمد') // This will come from authentication
 const showAddReading = ref(false)
@@ -128,8 +130,7 @@ const handleLogout = () => {
 }
 
 const navigateToChat = () => {
-  // TODO: Implement navigation
-  console.log('Navigate to chat')
+  emit('navigate-to-chat')
 }
 
 const navigateToNutrition = () => {
