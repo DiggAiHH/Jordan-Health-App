@@ -79,10 +79,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n()
+
+const emit = defineEmits(['login'])
 
 const patientId = ref('')
 const password = ref('')
@@ -109,11 +111,11 @@ const handleLogin = async () => {
     // For now, just simulate a delay
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // Temporary validation (will be replaced with Firebase Auth)
+    // Temporary validation - allow any login for demo
     console.log('Login attempt:', { patientId: patientId.value })
     
-    // This will be replaced with actual authentication logic
-    errorMessage.value = t('login.error.invalidCredentials')
+    // Emit login event to parent
+    emit('login', { patientId: patientId.value })
   } catch (error) {
     errorMessage.value = error.message || t('common.error')
   } finally {
