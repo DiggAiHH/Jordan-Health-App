@@ -91,42 +91,58 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuth } from '../composables/useAuth'
+import { addReading, subscribeToReadings } from '../firebase/database'
+import { logout } from '../firebase/auth'
 import AddReadingModal from './AddReadingModal.vue'
 
 const { t, locale } = useI18n()
+const { user, patientData, clearUser } = useAuth()
 
-const emit = defineEmits(['navigate-to-chat'])
+const emit = defineEmits(['navigate-to-chat', 'logout'])
 
-const patientName = ref('أحمد') // This will come from authentication
-const showAddReading = ref(false)
-
-// Sample readings data (will come from Firestore)
-const readings = ref([
-  {
-    id: 1,
-    glucoseLevel: 145,
-    context: 'afterMeal',
-    timestamp: new Date('2025-12-22T12:30:00'),
-    notes: ''
-  },
-  {
-    id: 2,
-    glucoseLevel: 95,
-    context: 'fasting',
-    timestamp: new Date('2025-12-22T08:00:00'),
-    notes: ''
+const patientName = computed(() => {
+  if (patientData.value) {
+    return patientData.value.firstName || patientData.value.patientId
   }
-])
+  return 'Patient'
+})
+
+const showAddReading = ref(false)
+const readings = ref([])
+const loadingReadings = ref(true)
+let unsubscribe = null
+
+onMounted(() => {
+  if (user.value) {
+    // Subscribe to real-time updates from Firestore
+    unsubscribe = subscribeToReadings(user.value.uid, (newReadings) => {
+      readings.value = newReadings
+      loadingReadings.value = false
+    })
+  }
+})
+
+onUnmounted(() => {
+  if (unsubscribe) {
+    unsubscribe()
+  }
+})
 
 const toggleLanguage = () => {
   locale.value = locale.value === 'ar' ? 'en' : 'ar'
 }
 
-const handleLogout = () => {
-  // TODO: Implement logout logic
-  console.log('Logout clicked')
+const handleLogout = async () => {
+  try {
+    await logout()
+    clearUser()
+    emit('logout')
+  } catch (error) {
+    console.error('Logout error:', error)
+  }
 }
 
 const navigateToChat = () => {
@@ -138,11 +154,17 @@ const navigateToNutrition = () => {
   console.log('Navigate to nutrition')
 }
 
-const handleSaveReading = (reading) => {
-  // TODO: Save to Firestore
-  readings.value.unshift({
-    id: Date.now(),
-    ...reading,
+const handleSaveReading = async (reading) => {
+  try {
+    // Save to Firestore
+    await addReading(user.value.uid, reading)
+    showAddReading.value = false
+    // Readings will be updated automatically through the subscription
+  } catch (error) {
+    console.error('Error saving reading:', error)
+    alert(t('common.error'))
+  }
+}
     timestamp: new Date()
   })
   showAddReading.value = false

@@ -88,53 +88,53 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuth } from '../composables/useAuth'
+import { sendMessage, subscribeToMessages } from '../firebase/database'
 
 const { t, locale } = useI18n()
+const { user, patientData } = useAuth()
 
 const emit = defineEmits(['back'])
 
 const messagesContainer = ref(null)
 const newMessage = ref('')
 const sending = ref(false)
+const messages = ref([])
+const loadingMessages = ref(true)
+let unsubscribe = null
 
-// Sample messages (will come from Firestore)
-const messages = ref([
-  {
-    id: 1,
-    messageText: locale.value === 'ar' 
-      ? 'مرحباً دكتور، قراءة السكر اليوم كانت 145 بعد الغداء. هل هذا طبيعي؟'
-      : 'Hello doctor, my glucose reading was 145 after lunch today. Is this normal?',
-    senderId: 'patient',
-    senderType: 'patient',
-    timestamp: new Date('2025-12-22T10:30:00'),
-    read: true,
-    aiSuggested: false
-  },
-  {
-    id: 2,
-    messageText: locale.value === 'ar'
-      ? 'مرحباً أحمد، قراءة 145 بعد الوجبة تعتبر مقبولة. استمر في المتابعة واحرص على المشي بعد الوجبات.'
-      : 'Hello Ahmed, a reading of 145 after a meal is acceptable. Keep monitoring and make sure to walk after meals.',
-    senderId: 'doctor',
-    senderType: 'doctor',
-    timestamp: new Date('2025-12-22T11:00:00'),
-    read: true,
-    aiSuggested: true
-  },
-  {
-    id: 3,
-    messageText: locale.value === 'ar'
-      ? 'شكراً دكتور، سأحرص على المشي يومياً.'
-      : 'Thank you doctor, I will make sure to walk daily.',
-    senderId: 'patient',
-    senderType: 'patient',
-    timestamp: new Date('2025-12-22T11:15:00'),
-    read: true,
-    aiSuggested: false
+// Doctor ID - in production this would come from patient data
+const doctorId = ref('doctor-001')
+
+onMounted(() => {
+  if (user.value && patientData.value) {
+    // Use doctor from patient data if available
+    if (patientData.value.doctorId) {
+      doctorId.value = patientData.value.doctorId
+    }
+    
+    // Subscribe to real-time messages from Firestore
+    unsubscribe = subscribeToMessages(user.value.uid, doctorId.value, (newMessages) => {
+      messages.value = newMessages
+      loadingMessages.value = false
+      
+      // Scroll to bottom after messages update
+      nextTick(() => {
+        if (messagesContainer.value) {
+          messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+        }
+      })
+    })
   }
-])
+})
+
+onUnmounted(() => {
+  if (unsubscribe) {
+    unsubscribe()
+  }
+})
 
 const toggleLanguage = () => {
   locale.value = locale.value === 'ar' ? 'en' : 'ar'
@@ -146,50 +146,14 @@ const handleSendMessage = async () => {
   sending.value = true
 
   try {
-    // TODO: Send to Firestore
-    const message = {
-      id: Date.now(),
-      messageText: newMessage.value,
-      senderId: 'patient',
-      senderType: 'patient',
-      timestamp: new Date(),
-      read: false,
-      aiSuggested: false
-    }
-
-    messages.value.push(message)
+    // Send to Firestore
+    await sendMessage(user.value.uid, newMessage.value, doctorId.value)
     newMessage.value = ''
-
-    // Scroll to bottom
-    await nextTick()
-    if (messagesContainer.value) {
-      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
-    }
-
-    // Simulate doctor response after 2 seconds
-    setTimeout(() => {
-      const doctorResponse = {
-        id: Date.now() + 1,
-        messageText: locale.value === 'ar'
-          ? 'شكراً على رسالتك. سأراجع قراءاتك وأرد عليك قريباً.'
-          : 'Thank you for your message. I will review your readings and get back to you soon.',
-        senderId: 'doctor',
-        senderType: 'doctor',
-        timestamp: new Date(),
-        read: false,
-        aiSuggested: true
-      }
-      messages.value.push(doctorResponse)
-      
-      nextTick(() => {
-        if (messagesContainer.value) {
-          messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
-        }
-      })
-    }, 2000)
-
+    
+    // Messages will be updated automatically through the subscription
   } catch (error) {
     console.error('Error sending message:', error)
+    alert(t('common.error'))
   } finally {
     sending.value = false
   }
@@ -201,11 +165,4 @@ const formatDate = (date) => {
     timeStyle: 'short'
   }).format(date)
 }
-
-onMounted(() => {
-  // Scroll to bottom on mount
-  if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
-  }
-})
 </script>

@@ -81,8 +81,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { loginWithPatientId } from '../firebase/auth'
+import { useAuth } from '../composables/useAuth'
 
 const { t, locale } = useI18n()
+const { setUser } = useAuth()
 
 const emit = defineEmits(['login'])
 
@@ -107,17 +110,27 @@ const handleLogin = async () => {
   loading.value = true
 
   try {
-    // TODO: Implement Firebase authentication
-    // For now, just simulate a delay
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    // Login with Firebase
+    const { user, patientData } = await loginWithPatientId(patientId.value, password.value)
     
-    // Temporary validation - allow any login for demo
-    console.log('Login attempt:', { patientId: patientId.value })
+    // Set user in auth state
+    setUser(user, patientData)
     
     // Emit login event to parent
-    emit('login', { patientId: patientId.value })
+    emit('login', { user, patientData })
   } catch (error) {
-    errorMessage.value = error.message || t('common.error')
+    console.error('Login error:', error)
+    
+    // Handle specific Firebase errors
+    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      errorMessage.value = t('login.error.invalidCredentials')
+    } else if (error.code === 'auth/too-many-requests') {
+      errorMessage.value = locale.value === 'ar' 
+        ? 'تم تجاوز عدد المحاولات. يرجى المحاولة لاحقاً'
+        : 'Too many attempts. Please try later'
+    } else {
+      errorMessage.value = error.message || t('common.error')
+    }
   } finally {
     loading.value = false
   }
