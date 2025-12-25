@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basis-Styles für geriatrische Patienten */
+html {
+  font-size: 18px; /* Größere Basis-Schriftgröße */
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* RTL-Support für Arabisch */
+[dir="rtl"] {
+  text-align: right;
+}
+
+/* Hoher Kontrast für bessere Lesbarkeit */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --bg-primary: #ffffff;
+  }
+}
+
+/* Reduzierte Bewegung für empfindliche Nutzer */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Große Touch-Targets */
+button, 
+[role="button"],
+a,
+input,
+select,
+textarea {
+  min-height: 44px;
+}
+
+/* Focus-Indikatoren */
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
