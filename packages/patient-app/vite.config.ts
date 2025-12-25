@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@jordan-health/shared': path.resolve(__dirname, '../shared/src'),
     },
   },
   server: {
@@ -16,5 +17,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'date-fns'],
   },
 });
