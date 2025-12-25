@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { type Locale, getTranslations, type Translations } from '../i18n/translations';
 import { useLocalStorage } from './useLocalStorage';
 

@@ -67,8 +67,9 @@ const mockAiSuggestions = [
  * Patientendetail-Seite mit KI-Analyse und Antwort-Vorschlägen
  */
 export function PatientDetail() {
-  const { id } = useParams<{ id: string }>();
+  const { id: _patientId } = useParams<{ id: string }>();
   const { t, locale } = useAppLocale();
+  // Note: _patientId will be used when connecting to real API
   const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
   const [customMessage, setCustomMessage] = useState('');
   const [messageSent, setMessageSent] = useState(false);

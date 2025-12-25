@@ -11,7 +11,7 @@ import { useBloodGlucoseStore } from '../hooks/useBloodGlucoseStore';
  */
 export function Dashboard() {
   const { t, locale } = useAppLocale();
-  const { readings, loading, getLatestReading, getReadingsForPeriod } = useBloodGlucoseStore();
+  const { loading, getLatestReading, getReadingsForPeriod } = useBloodGlucoseStore();
 
   const latestReading = getLatestReading();
   const last7Days = getReadingsForPeriod(7);
@@ -29,13 +29,6 @@ export function Dashboard() {
       </div>
     );
   }
-
-  const riskColors = {
-    low: 'bg-green-100 border-green-300 text-green-800',
-    moderate: 'bg-yellow-100 border-yellow-300 text-yellow-800',
-    high: 'bg-orange-100 border-orange-300 text-orange-800',
-    critical: 'bg-red-100 border-red-300 text-red-800',
-  };
 
   const trendLabels = {
     improving: { de: '📈 Verbesserung', ar: '📈 تحسن' },

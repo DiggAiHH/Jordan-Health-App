@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Button, Input } from '@jordan-health/shared';
+import { Card, Input } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';
 
 // Mock-Patientendaten

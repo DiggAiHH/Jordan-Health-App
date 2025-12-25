@@ -11,7 +11,7 @@ type ViewMode = '7days' | '14days' | '30days';
  */
 export function MealHistory() {
   const { t, locale } = useAppLocale();
-  const { meals, loading, deleteMeal, getMealsForPeriod } = useMealStore();
+  const { loading, deleteMeal, getMealsForPeriod } = useMealStore();
   const [viewMode, setViewMode] = useState<ViewMode>('7days');
 
   const daysMap: Record<ViewMode, number> = {
