@@ -1,0 +1,31 @@
+{
+  "name": "jordan-health-app",
+  "version": "1.0.0",
+  "description": "Diabetes Follow-Up System für Dr. Alshdaifat (Jordanien)",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:patient": "npm run dev --workspace=@jordan-health/patient-app",
+    "dev:doctor": "npm run dev --workspace=@jordan-health/doctor-app",
+    "dev:nutrition": "npm run dev --workspace=@jordan-health/nutrition-app",
+    "dev:admin": "npm run dev --workspace=@jordan-health/admin-app",
+    "build": "npm run build --workspaces",
+    "build:shared": "npm run build --workspace=@jordan-health/shared",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "keywords": [
+    "diabetes",
+    "healthcare",
+    "jordan",
+    "geriatric"
+  ],
+  "author": "Dr. Alshdaifat",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
