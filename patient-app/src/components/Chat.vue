@@ -32,15 +32,15 @@
           v-for="message in messages"
           :key="message.id"
           class="flex"
-          :class="message.senderId === 'patient' ? 'justify-start' : 'justify-end'"
+          :class="message.senderId === user?.uid ? 'justify-start' : 'justify-end'"
         >
           <div
             class="max-w-[70%] rounded-lg p-4"
-            :class="message.senderId === 'patient' ? 'bg-gray-100' : 'bg-blue-900 text-white'"
+            :class="message.senderId === user?.uid ? 'bg-gray-100' : 'bg-blue-900 text-white'"
           >
             <!-- Sender -->
             <p class="text-sm font-semibold mb-1">
-              {{ message.senderId === 'patient' ? t('chat.you') : t('chat.doctor') }}
+              {{ message.senderId === user?.uid ? t('chat.you') : t('chat.doctor') }}
             </p>
             
             <!-- Message Text -->

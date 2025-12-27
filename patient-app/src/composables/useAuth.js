@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { onAuthChange, getCurrentUser } from '../firebase/auth'
+import { onAuthChange } from '../firebase/auth'
 import { getPatientData } from '../firebase/database'
 
 const user = ref(null)

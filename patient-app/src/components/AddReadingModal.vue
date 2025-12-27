@@ -108,9 +108,6 @@ const handleSubmit = async () => {
   loading.value = true
 
   try {
-    // TODO: Save to Firestore
-    await new Promise(resolve => setTimeout(resolve, 500))
-    
     emit('save', {
       glucoseLevel: form.value.glucoseLevel,
       context: form.value.context,

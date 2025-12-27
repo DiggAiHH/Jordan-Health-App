@@ -165,10 +165,6 @@ const handleSaveReading = async (reading) => {
     alert(t('common.error'))
   }
 }
-    timestamp: new Date()
-  })
-  showAddReading.value = false
-}
 
 const getGlucoseClass = (level) => {
   if (level < 70) return 'border-red-600'

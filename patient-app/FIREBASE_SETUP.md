@@ -95,9 +95,11 @@ service cloud.firestore {
                   (isOwner(resource.data.patientId) || 
                    isOwner(resource.data.doctorId));
       allow create: if isAuthenticated() && isOwner(request.resource.data.senderId);
-      allow update: if isAuthenticated() && 
-                    (isOwner(resource.data.patientId) || 
-                     isOwner(resource.data.doctorId));
+      allow update: if isAuthenticated()
+                    && isOwner(resource.data.senderId)
+                    && request.resource.data.patientId == resource.data.patientId
+                    && request.resource.data.doctorId == resource.data.doctorId
+                    && request.resource.data.senderId == resource.data.senderId;
     }
     
     // Nutrition logs collection
