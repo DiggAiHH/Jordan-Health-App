@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "JoBetes - Diabetes Follow-Up System",
+    "subtitle": "Jordan Health Diabetes System"
+  },
+  "login": {
+    "title": "Login",
+    "patientId": "Patient ID",
+    "patientIdPlaceholder": "Example: JO-2025-0001",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Login",
+    "forgotPassword": "Forgot Password?",
+    "error": {
+      "invalidCredentials": "Invalid Patient ID or Password",
+      "requiredFields": "Please fill in all fields"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {name}",
+    "bloodSugar": "Blood Sugar Level",
+    "addReading": "Add Reading",
+    "chat": "Chat with Doctor",
+    "nutrition": "Nutrition",
+    "latestReadings": "Latest Readings",
+    "noReadings": "No readings yet"
+  },
+  "readings": {
+    "title": "Blood Sugar Readings",
+    "addNew": "Add New Reading",
+    "glucoseLevel": "Glucose Level (mg/dL)",
+    "glucosePlaceholder": "Example: 120",
+    "context": "Context",
+    "beforeMeal": "Before Meal",
+    "afterMeal": "After Meal",
+    "fasting": "Fasting",
+    "bedtime": "Bedtime",
+    "notes": "Notes",
+    "notesPlaceholder": "Add any notes (optional)",
+    "save": "Save",
+    "cancel": "Cancel",
+    "success": "Reading saved successfully",
+    "levels": {
+      "low": "Low",
+      "normal": "Normal",
+      "elevated": "Elevated",
+      "high": "High"
+    }
+  },
+  "chat": {
+    "title": "Chat with Doctor",
+    "typePlaceholder": "Type your message here...",
+    "send": "Send",
+    "noMessages": "No messages yet",
+    "you": "You",
+    "doctor": "Doctor"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "logout": "Logout"
+  }
+}
