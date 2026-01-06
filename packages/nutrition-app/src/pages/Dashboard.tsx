@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Card, Button, LoadingSpinner } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';

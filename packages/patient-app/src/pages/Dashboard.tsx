@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, GlucoseValueDisplay, Button, Alert } from '@jordan-health/shared';
 import { calculateTimeInRange, assessRiskLevel, calculateGlucoseTrend } from '@jordan-health/shared';

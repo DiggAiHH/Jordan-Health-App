@@ -53,7 +53,15 @@
     "send": "Send",
     "noMessages": "No messages yet",
     "you": "You",
-    "doctor": "Doctor"
+    "doctor": "Doctor",
+    "addPhoto": "📷 Add Photo",
+    "imageReady": "Image ready to send",
+    "removeImage": "Remove image",
+    "imageAttachment": "Shared image",
+    "messagesArea": "Chat messages",
+    "errorInvalidType": "Only JPG, PNG or HEIC images allowed",
+    "errorFileTooLarge": "Image too large (max 5MB)",
+    "errorUploadFailed": "Failed to upload image. Please try again."
   },
   "common": {
     "loading": "Loading...",

@@ -4,6 +4,7 @@ import { Dashboard } from './pages/Dashboard';
 import { PatientList } from './pages/PatientList';
 import { PatientDetail } from './pages/PatientDetail';
 import { Alerts } from './pages/Alerts';
+import { ChatInbox } from './pages/ChatInbox';
 import { LocaleProvider } from './hooks/useAppLocale';
 
 /**
@@ -19,6 +20,7 @@ function App() {
             <Route path="/patients" element={<PatientList />} />
             <Route path="/patients/:id" element={<PatientDetail />} />
             <Route path="/alerts" element={<Alerts />} />
+            <Route path="/inbox" element={<ChatInbox />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>

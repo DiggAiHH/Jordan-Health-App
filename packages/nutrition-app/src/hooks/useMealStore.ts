@@ -43,7 +43,8 @@ export function useMealStore() {
     items: MealItem[],
     notes?: string,
     bloodGlucoseBefore?: number,
-    bloodGlucoseAfter?: number
+    bloodGlucoseAfter?: number,
+    photoUrl?: string
   ): Meal => {
     const totalCarbohydrates = items.reduce((sum, item) => sum + item.carbohydrates, 0);
     const totalCalories = items.reduce((sum, item) => sum + item.calories, 0);
@@ -59,6 +60,7 @@ export function useMealStore() {
       notes,
       bloodGlucoseBefore,
       bloodGlucoseAfter,
+      photoUrl,
     };
 
     setMeals(prev => {

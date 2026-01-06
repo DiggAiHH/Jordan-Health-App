@@ -77,18 +77,40 @@ export const subscribeToReadings = (userId, callback, limitCount = 10) => {
 /**
  * Chat Messages
  */
-export const sendMessage = async (userId, messageText, doctorId) => {
+
+/**
+ * Sends a chat message with optional image attachment
+ * @param {string} userId - Patient user ID
+ * @param {string} messageText - Message text content
+ * @param {string} doctorId - Doctor ID
+ * @param {object|null} attachment - Optional image attachment { url, path, size }
+ * @returns {Promise<string>} - Message document ID
+ * @security No PII logging, attachment URLs are Firebase Storage signed URLs
+ */
+export const sendMessage = async (userId, messageText, doctorId, attachment = null) => {
   try {
-    const docRef = await addDoc(collection(db, 'chat_messages'), {
+    const messageData = {
       patientId: userId,
       doctorId: doctorId,
       senderId: userId,
       senderType: 'patient',
-      messageText,
+      messageText: messageText || '',
       timestamp: serverTimestamp(),
       read: false,
       aiSuggested: false
-    })
+    }
+
+    // Add attachment if present (image)
+    if (attachment && attachment.url) {
+      messageData.attachment = {
+        type: 'image',
+        url: attachment.url,
+        path: attachment.path,
+        size: attachment.size
+      }
+    }
+
+    const docRef = await addDoc(collection(db, 'chat_messages'), messageData)
     
     return docRef.id
   } catch (error) {

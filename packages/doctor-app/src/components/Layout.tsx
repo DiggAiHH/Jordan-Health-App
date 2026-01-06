@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LanguageSwitch } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';
@@ -17,6 +17,7 @@ export function Layout({ children }: LayoutProps) {
 
   const navItems = [
     { path: '/', label: t.doctor.dashboard, icon: '📊' },
+    { path: '/inbox', label: t.doctor.inbox, icon: '💬' },
     { path: '/patients', label: t.doctor.patients, icon: '👥' },
     { path: '/alerts', label: t.doctor.alerts, icon: '🔔' },
   ];

@@ -4,6 +4,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Patients } from './pages/Patients';
 import { Doctors } from './pages/Doctors';
 import { AddUser } from './pages/AddUser';
+import { Conversations } from './pages/Conversations';
 import { LocaleProvider } from './hooks/useAppLocale';
 
 /**
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/patients" element={<Patients />} />
             <Route path="/doctors" element={<Doctors />} />
+            <Route path="/conversations" element={<Conversations />} />
             <Route path="/add-user" element={<AddUser />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -11,6 +11,7 @@
     "dev:doctor": "npm run dev --workspace=@jordan-health/doctor-app",
     "dev:nutrition": "npm run dev --workspace=@jordan-health/nutrition-app",
     "dev:admin": "npm run dev --workspace=@jordan-health/admin-app",
+    "dev:all": "concurrently -n \"patient,doctor,nutrition,admin\" -c \"blue,green,yellow,magenta\" \"npm run dev:patient\" \"npm run dev:doctor\" \"npm run dev:nutrition\" \"npm run dev:admin\"",
     "build": "npm run build --workspaces",
     "build:shared": "npm run build --workspace=@jordan-health/shared",
     "lint": "npm run lint --workspaces --if-present",
@@ -27,5 +28,8 @@
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

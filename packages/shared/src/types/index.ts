@@ -118,6 +118,20 @@ export interface ChatMessage {
   // Für KI-generierte Nachrichten
   isAiGenerated?: boolean;
   aiConfidence?: number;
+  // Image attachment support
+  attachment?: ChatAttachment;
+}
+
+/**
+ * Chat attachment (image) metadata
+ * @security URLs are Firebase Storage signed URLs with expiration
+ */
+export interface ChatAttachment {
+  type: 'image';
+  url: string;
+  path: string;
+  size: number;
+  thumbnailUrl?: string;
 }
 
 export interface Conversation {
@@ -127,6 +141,9 @@ export interface Conversation {
   messages: ChatMessage[];
   lastMessageAt: Date;
   status: ConversationStatus;
+  // Track unread for doctor inbox
+  unreadCount?: number;
+  lastMessagePreview?: string;
 }
 
 export type ConversationStatus = 'active' | 'waiting_for_doctor' | 'waiting_for_patient' | 'closed';

@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { onAuthChange } from '../firebase/auth'
 import { getPatientData } from '../firebase/database'
+import { logger } from '../utils/logger'
 
 const user = ref(null)
 const patientData = ref(null)
@@ -20,13 +21,16 @@ export function useAuth() {
           // Load patient data
           const data = await getPatientData(firebaseUser.uid)
           patientData.value = data
+          logger.info('Patient data loaded successfully', { uid: firebaseUser.uid })
         } catch (err) {
-          console.error('Error loading patient data:', err)
+          // GDPR Art. 9: Do NOT log error details that may contain PII
+          logger.error('Error loading patient data', { errorCode: err.code, uid: firebaseUser.uid })
           error.value = err.message
         }
       } else {
         user.value = null
         patientData.value = null
+        logger.debug('User logged out')
       }
       loading.value = false
     })

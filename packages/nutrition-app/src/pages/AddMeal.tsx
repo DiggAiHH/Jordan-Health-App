@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Button, Input, Alert } from '@jordan-health/shared';
+import { Card, Button, Input, Alert, validateImageFile, createImagePreview, revokeImagePreview } from '@jordan-health/shared';
 import type { MealType, MealItem, GlycemicIndexCategory } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';
 import { useMealStore } from '../hooks/useMealStore';
+import imageCompression from 'browser-image-compression';
 
 // Vordefinierte Lebensmittel für Jordanien/Nahost
 const commonFoods: Array<{
@@ -29,11 +30,13 @@ const commonFoods: Array<{
 
 /**
  * Formular zum Hinzufügen einer neuen Mahlzeit
+ * Mit Foto-Upload für bessere Dokumentation
  */
 export function AddMeal() {
   const { t, locale } = useAppLocale();
   const navigate = useNavigate();
   const { addMeal } = useMealStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [mealType, setMealType] = useState<MealType>('lunch');
   const [selectedItems, setSelectedItems] = useState<MealItem[]>([]);
@@ -41,6 +44,12 @@ export function AddMeal() {
   const [glucoseBefore, setGlucoseBefore] = useState('');
   const [glucoseAfter, setGlucoseAfter] = useState('');
   const [success, setSuccess] = useState(false);
+
+  // Photo upload state
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const mealTypes: MealType[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
@@ -73,19 +82,82 @@ export function AddMeal() {
     setSelectedItems(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Photo handling
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPhotoError('');
+    const validation = validateImageFile(file);
+    
+    if (!validation.valid) {
+      if (validation.error === 'INVALID_TYPE') {
+        setPhotoError(locale === 'ar' ? 'يُسمح فقط بصور JPG أو PNG أو HEIC' : 'Nur JPG, PNG oder HEIC erlaubt');
+      } else if (validation.error === 'FILE_TOO_LARGE') {
+        setPhotoError(locale === 'ar' ? 'الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)' : 'Bild zu groß (max. 5MB)');
+      }
+      e.target.value = '';
+      return;
+    }
+
+    if (photoPreview) {
+      revokeImagePreview(photoPreview);
+    }
+
+    setSelectedPhoto(file);
+    setPhotoPreview(createImagePreview(file));
+  };
+
+  const clearPhoto = () => {
+    if (photoPreview) {
+      revokeImagePreview(photoPreview);
+    }
+    setSelectedPhoto(null);
+    setPhotoPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const compressPhoto = async (file: File): Promise<File> => {
+    if (file.size < 500 * 1024) return file;
+    try {
+      return await imageCompression(file, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+        fileType: 'image/jpeg'
+      });
+    } catch {
+      return file;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (selectedItems.length === 0) return;
+
+    setUploading(true);
+
+    // In production: upload photo to Firebase Storage
+    let photoUrl: string | undefined;
+    if (selectedPhoto) {
+      await compressPhoto(selectedPhoto);
+      // Mock URL - replace with real Firebase Storage upload
+      photoUrl = photoPreview || undefined;
+    }
 
     addMeal(
       mealType,
       selectedItems,
       notes || undefined,
       glucoseBefore ? parseFloat(glucoseBefore) : undefined,
-      glucoseAfter ? parseFloat(glucoseAfter) : undefined
+      glucoseAfter ? parseFloat(glucoseAfter) : undefined,
+      photoUrl
     );
 
+    setUploading(false);
     setSuccess(true);
     setTimeout(() => navigate('/'), 1500);
   };
@@ -132,6 +204,64 @@ export function AddMeal() {
               </button>
             ))}
           </div>
+        </Card>
+
+        {/* Foto der Mahlzeit */}
+        <Card title={locale === 'ar' ? '📷 صورة الوجبة' : '📷 Foto der Mahlzeit'} className="mt-6">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/heic,image/heif"
+            onChange={handlePhotoSelect}
+            className="hidden"
+            id="meal-photo"
+          />
+          
+          {!photoPreview ? (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full p-6 border-2 border-dashed border-amber-400 rounded-xl
+                bg-amber-50 hover:bg-amber-100 transition-colors duration-200
+                flex flex-col items-center justify-center gap-3
+                min-h-[120px] focus:outline-none focus:ring-4 focus:ring-amber-300"
+            >
+              <span className="text-4xl">📷</span>
+              <span className="text-lg font-medium text-amber-700">
+                {locale === 'ar' ? 'التقاط صورة للوجبة' : 'Foto aufnehmen'}
+              </span>
+              <span className="text-sm text-gray-500">
+                {locale === 'ar' ? 'اختياري - يساعد الطبيب' : 'Optional - hilft dem Arzt'}
+              </span>
+            </button>
+          ) : (
+            <div className="relative">
+              <img
+                src={photoPreview}
+                alt={locale === 'ar' ? 'صورة الوجبة' : 'Mahlzeit Foto'}
+                className="w-full max-h-[200px] object-contain rounded-lg border border-gray-200"
+              />
+              <button
+                type="button"
+                onClick={clearPhoto}
+                className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full
+                  shadow-lg hover:bg-red-700 transition-colors
+                  min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={locale === 'ar' ? 'إزالة الصورة' : 'Foto entfernen'}
+              >
+                ✕
+              </button>
+              <div className="mt-2 text-center text-sm text-green-600 font-medium">
+                ✓ {locale === 'ar' ? 'الصورة جاهزة' : 'Foto bereit'}
+              </div>
+            </div>
+          )}
+
+          {photoError && (
+            <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center">
+              {photoError}
+            </div>
+          )}
         </Card>
 
         {/* Lebensmittel auswählen */}
@@ -240,6 +370,7 @@ export function AddMeal() {
             size="lg"
             onClick={() => navigate(-1)}
             className="flex-1"
+            disabled={uploading}
           >
             {t.common.cancel}
           </Button>
@@ -248,9 +379,9 @@ export function AddMeal() {
             variant="success"
             size="lg"
             className="flex-1"
-            disabled={selectedItems.length === 0}
+            disabled={selectedItems.length === 0 || uploading}
           >
-            {t.common.save}
+            {uploading ? (locale === 'ar' ? '⏳ جاري الحفظ...' : '⏳ Speichern...') : t.common.save}
           </Button>
         </div>
       </form>

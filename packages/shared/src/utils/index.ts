@@ -12,6 +12,9 @@ import type {
   MeasurementContext 
 } from '../types';
 
+// Re-export storage utilities
+export * from './storage';
+
 // ============ Konstanten für medizinische Werte ============
 
 // Medizinisch sinnvolle Grenzen für Blutzuckerwerte in mg/dL

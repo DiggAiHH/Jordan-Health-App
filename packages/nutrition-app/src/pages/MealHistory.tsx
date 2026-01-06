@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, Button, LoadingSpinner } from '@jordan-health/shared';
 import { formatDate } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';

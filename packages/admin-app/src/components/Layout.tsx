@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LanguageSwitch } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';
@@ -19,6 +19,7 @@ export function Layout({ children }: LayoutProps) {
     { path: '/', label: t.admin.dashboard, icon: '📊' },
     { path: '/patients', label: t.admin.patients, icon: '👥' },
     { path: '/doctors', label: t.admin.doctors, icon: '👨‍⚕️' },
+    { path: '/conversations', label: locale === 'ar' ? 'المحادثات' : 'Konversationen', icon: '💬' },
     { path: '/add-user', label: t.admin.addUser, icon: '➕' },
   ];
 

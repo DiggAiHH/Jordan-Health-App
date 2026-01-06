@@ -53,6 +53,14 @@ export interface Translations {
     trend: string;
     average: string;
     timeInRange: string;
+    // Chat image support
+    addPhoto: string;
+    imageReady: string;
+    removeImage: string;
+    imageAttachment: string;
+    errorInvalidType: string;
+    errorFileTooLarge: string;
+    errorUploadFailed: string;
   };
   doctor: {
     dashboard: string;
@@ -68,6 +76,13 @@ export interface Translations {
     sendResponse: string;
     editResponse: string;
     useAiSuggestion: string;
+    // Chat inbox support
+    inbox: string;
+    conversations: string;
+    noConversations: string;
+    unreadMessages: string;
+    viewImage: string;
+    patientSentImage: string;
   };
   nutrition: {
     dashboard: string;
@@ -172,6 +187,13 @@ export const translations: Record<Locale, Translations> = {
       trend: 'Trend',
       average: 'Durchschnitt',
       timeInRange: 'Zeit im Zielbereich',
+      addPhoto: '📷 Foto hinzufügen',
+      imageReady: 'Bild bereit zum Senden',
+      removeImage: 'Bild entfernen',
+      imageAttachment: 'Geteiltes Bild',
+      errorInvalidType: 'Nur JPG, PNG oder HEIC Bilder erlaubt',
+      errorFileTooLarge: 'Bild zu groß (max. 5MB)',
+      errorUploadFailed: 'Upload fehlgeschlagen. Bitte erneut versuchen.',
     },
     doctor: {
       dashboard: 'Arzt-Dashboard',
@@ -187,6 +209,12 @@ export const translations: Record<Locale, Translations> = {
       sendResponse: 'Antwort senden',
       editResponse: 'Antwort bearbeiten',
       useAiSuggestion: 'KI-Vorschlag verwenden',
+      inbox: 'Posteingang',
+      conversations: 'Konversationen',
+      noConversations: 'Keine Nachrichten',
+      unreadMessages: 'Ungelesene Nachrichten',
+      viewImage: 'Bild ansehen',
+      patientSentImage: 'Patient hat ein Bild gesendet',
     },
     nutrition: {
       dashboard: 'Ernährungs-Dashboard',
@@ -289,6 +317,13 @@ export const translations: Record<Locale, Translations> = {
       trend: 'الاتجاه',
       average: 'المعدل',
       timeInRange: 'الوقت ضمن المعدل',
+      addPhoto: '📷 إضافة صورة',
+      imageReady: 'الصورة جاهزة للإرسال',
+      removeImage: 'إزالة الصورة',
+      imageAttachment: 'صورة مشتركة',
+      errorInvalidType: 'يُسمح فقط بصور JPG أو PNG أو HEIC',
+      errorFileTooLarge: 'الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)',
+      errorUploadFailed: 'فشل رفع الصورة. يرجى المحاولة مرة أخرى.',
     },
     doctor: {
       dashboard: 'لوحة تحكم الطبيب',
@@ -304,6 +339,12 @@ export const translations: Record<Locale, Translations> = {
       sendResponse: 'إرسال الرد',
       editResponse: 'تعديل الرد',
       useAiSuggestion: 'استخدم اقتراح الذكاء الاصطناعي',
+      inbox: 'البريد الوارد',
+      conversations: 'المحادثات',
+      noConversations: 'لا توجد رسائل',
+      unreadMessages: 'رسائل غير مقروءة',
+      viewImage: 'عرض الصورة',
+      patientSentImage: 'أرسل المريض صورة',
     },
     nutrition: {
       dashboard: 'لوحة تحكم التغذية',

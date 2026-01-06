@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Input } from '@jordan-health/shared';
 import { useAppLocale } from '../hooks/useAppLocale';
